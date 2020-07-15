@@ -13,5 +13,6 @@
 
     <string name="channelId">channel-01</string>
     <string name="message">The Message</string>
-    <string name="msg_token" translatable="false">InstanceID Token: %s</string>
+    <string name="msg_token" translatable="false">Token: %s</string>
+    <string name="msg_notification" translatable="false">Notification: %s</string>
 </resources>

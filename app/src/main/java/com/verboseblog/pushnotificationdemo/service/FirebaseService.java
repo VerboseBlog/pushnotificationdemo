@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -23,7 +25,9 @@ import java.util.Map;
 import static android.content.ContentValues.TAG;
 
 public class FirebaseService extends FirebaseMessagingService {
+    private static Context mContext;
     public FirebaseService() {
+        mContext = this;
     }
 
     @Override
@@ -44,7 +48,16 @@ public class FirebaseService extends FirebaseMessagingService {
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         Map<String, String> data = remoteMessage.getData();
 
-        sendNotification(remoteMessage.getNotification().getBody());
+        if (remoteMessage.getNotification() != null) {
+            sendNotification(remoteMessage.getNotification().getBody());
+            sendMessageToActivity(remoteMessage.getNotification().getBody());
+        }
+    }
+
+    private static void sendMessageToActivity(String msg) {
+        Intent intent = new Intent("NotificationDemo");
+        intent.putExtra("Message", msg);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
     }
 
     private void sendNotification(String messageBody) {
